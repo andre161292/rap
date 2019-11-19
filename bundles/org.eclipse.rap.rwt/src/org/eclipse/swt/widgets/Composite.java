@@ -629,45 +629,12 @@ public class Composite extends Scrollable {
    *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
    * </ul>
    *
+   * @deprecated use {@link Composite#layout(Control[], int)} instead
    * @since 1.0
    */
+  @Deprecated
   public void changed( Control[] changed ) {
-    checkWidget();
-    if( changed == null ) {
-      error( SWT.ERROR_INVALID_ARGUMENT );
-    }
-    for( int i = 0; i < changed.length; i++ ) {
-      Control control = changed[ i ];
-      if( control == null ) {
-        error( SWT.ERROR_INVALID_ARGUMENT );
-      }
-      if( control.isDisposed() ) {
-        error( SWT.ERROR_INVALID_ARGUMENT );
-      }
-      boolean ancestor = false;
-      Composite composite = control._getParent();
-      while( composite != null ) {
-        ancestor = composite == this;
-        if( ancestor ) {
-          break;
-        }
-        composite = composite._getParent();
-      }
-      if( !ancestor ) {
-        error( SWT.ERROR_INVALID_PARENT );
-      }
-      }
-    for( int i = 0; i < changed.length; i++ ) {
-      Control child = changed[ i ];
-      Composite composite = child._getParent();
-      while( child != this ) {
-        if( composite.layout == null || !composite.layout.flushCache( child ) ) {
-          composite.addState( LAYOUT_CHANGED );
-        }
-        child = composite;
-        composite = child._getParent();
-      }
-    }
+    layout(changed, SWT.DEFER);
   }
 
   /**
