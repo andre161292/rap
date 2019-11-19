@@ -500,6 +500,9 @@ public class Composite extends Scrollable {
       for (int i=0; i<changed.length; i++) {
         Control child = changed [i];
         Composite composite = child._getParent();
+        // Update layout when the list of children has changed.
+        // See bug 497812.
+        child.markLayout(false, false);
         while (child != this) {
           if (composite.layout != null) {
             composite.addState( LAYOUT_NEEDED );
